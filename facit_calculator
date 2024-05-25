@@ -1,0 +1,93 @@
+#To calculate the score of facit scale 
+#Facit scales uses a simple but attention seeking basic mathematical calculation
+#to run the python based program in anty compilor 
+def get_likert_scores(questions):
+    scores = {}
+    for question in questions:
+        while True:
+            try:
+                score = int(input(f"Enter your score for {question} (0-4): "))
+                if score < 0 or score > 4:
+                    raise ValueError
+                scores[question] = score
+                break
+            except ValueError:
+                print("Invalid input. Please enter a number between 0 and 4.")
+    return scores
+
+def transform_scores(scores, transform_rules):
+    transformed_scores = {}
+    for question, rule in transform_rules.items():
+        if rule == "4-score":
+            transformed_scores[question] = 4 - scores[question]
+        elif rule == "0+score":
+            transformed_scores[question] = scores[question]
+    return transformed_scores
+
+def calculate_subgroup_scale(transformed_scores, num_questions):
+    total_transformed_sum = sum(transformed_scores.values())
+    return (total_transformed_sum * 7) / num_questions
+
+def main():
+    # Define questions for each subgroup
+    pwb_questions = ["gp1", "gp2", "gp3", "gp4", "gp5", "gp6", "gp7"]
+    swb_questions = ["gs1", "gs2", "gs3", "gs4", "gs5", "gs6", "gs7"]
+    ewb_questions = ["ge1", "ge2", "ge3", "ge4", "ge5", "ge6"]
+    fwb_questions = ["gf1", "gf2", "gf3", "gf4", "gf5", "gf6", "gf7"]
+    fs_questions = ["HI7", "HI12", "an1", "an2", "an3", "an4", "an5", "an6", "an7", "an8", "ans12", "ans13", "ans14", "ans15", "ans16"]
+    pcs_questions = ["C2", "c6", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "bl2", "p8", "bl5"]
+
+    # Define transformation rules
+    transform_rules = {
+        "gp1": "4-score", "gp2": "4-score", "gp3": "4-score", "gp4": "4-score", "gp5": "4-score", "gp6": "4-score", "gp7": "4-score",
+        "gs1": "0+score", "gs2": "0+score", "gs3": "0+score", "gs4": "0+score", "gs5": "0+score", "gs6": "0+score", "gs7": "0+score",
+        "ge1": "4-score", "ge2": "0+score", "ge3": "4-score", "ge4": "4-score", "ge5": "4-score", "ge6": "4-score",
+        "gf1": "0+score", "gf2": "0+score", "gf3": "0+score", "gf4": "0+score", "gf5": "0+score", "gf6": "0+score", "gf7": "0+score",
+        "HI7": "4-score", "HI12": "4-score", "an1": "4-score", "an2": "4-score", "an3": "4-score", "an4": "4-score", "an5": "0+score", "an6": "4-score", "an7": "0+score", "an8": "4-score", 
+        "ans12": "4-score", "ans13": "4-score", "ans14": "4-score", "ans15": "4-score", "ans16": "4-score",
+        "C2": "4-score", "c6": "0+score", "p1": "4-score", "p2": "4-score", "p3": "4-score", "p4": "0+score", "p5": "0+score", "p6": "4-score", "p7": "4-score", "bl2": "4-score", "p8": "4-score", "bl5": "0+score"
+    }
+
+    # Get scores for each subgroup
+    pwb_scores = get_likert_scores(pwb_questions)
+    swb_scores = get_likert_scores(swb_questions)
+    ewb_scores = get_likert_scores(ewb_questions)
+    fwb_scores = get_likert_scores(fwb_questions)
+    fs_scores = get_likert_scores(fs_questions)
+    pcs_scores = get_likert_scores(pcs_questions)
+
+    # Transform scores based on rules
+    pwb_transformed = transform_scores(pwb_scores, transform_rules)
+    swb_transformed = transform_scores(swb_scores, transform_rules)
+    ewb_transformed = transform_scores(ewb_scores, transform_rules)
+    fwb_transformed = transform_scores(fwb_scores, transform_rules)
+    fs_transformed = transform_scores(fs_scores, transform_rules)
+    pcs_transformed = transform_scores(pcs_scores, transform_rules)
+
+    # Calculate subgroup scales
+    pwb_scale = calculate_subgroup_scale(pwb_transformed, len(pwb_questions))
+    swb_scale = calculate_subgroup_scale(swb_transformed, len(swb_questions))
+    ewb_scale = calculate_subgroup_scale(ewb_transformed, len(ewb_questions))
+    fwb_scale = calculate_subgroup_scale(fwb_transformed, len(fwb_questions))
+    fs_scale = calculate_subgroup_scale(fs_transformed, len(fs_questions))
+    pcs_scale = calculate_subgroup_scale(pcs_transformed, len(pcs_questions))
+
+    # Calculate total scores
+    facit_f_total_score = pwb_scale + swb_scale + ewb_scale + fwb_scale + fs_scale
+    facit_g_score = pwb_scale + swb_scale + ewb_scale + fwb_scale
+    facit_p_total_score = pwb_scale + swb_scale + ewb_scale + fwb_scale + pcs_scale
+
+    # Print results
+    print(f"\nPWB Scale: {pwb_scale}")
+    print(f"SWB Scale: {swb_scale}")
+    print(f"EWB Scale: {ewb_scale}")
+    print(f"FWB Scale: {fwb_scale}")
+    print(f"FS Scale: {fs_scale}")
+    print(f"PCS Scale: {pcs_scale}\n")
+
+    print(f"FACIT-F Total Score: {facit_f_total_score}")
+    print(f"FACIT-G Score: {facit_g_score}")
+    print(f"FACIT-P Total Score: {facit_p_total_score}")
+
+if __name__ == "__main__":
+    main()
