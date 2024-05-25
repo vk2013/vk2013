@@ -11,4 +11,6 @@ vk2013/vk2013 is a ✨ special ✨ repository because its `README.md` (this file
 You can click the Preview link to take a look at your changes.
 --->
 # trying out new things
-python
+Python
+Medical student 
+Absurdism 
